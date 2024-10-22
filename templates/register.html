@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Registro de Seminarios</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+    <h1>{{ 'Editar' if registrant else 'Registro en' }} Seminarios</h1>
+    <form action="{{ url_for('register') }}" method="post">
+        <!-- El campo oculto para el índice de edición -->
+        {% if registrant %}
+        <input type="hidden" name="edit_index" value="{{ edit_index }}">
+        {% endif %}
+
+        <label for="name">Nombre:</label>
+        <input type="text" id="name" name="name" value="{{ registrant['name'] if registrant else '' }}" required><br>
+
+        <label for="surname">Apellido:</label>
+        <input type="text" id="surname" name="surname" value="{{ registrant['surname'] if registrant else '' }}" required><br>
+
+        <label for="date">Fecha:</label>
+        <input type="date" id="date" name="date" value="{{ registrant['date'] if registrant else '' }}" required><br>
+
+        <label for="time_slot">Turno:</label>
+        <select id="time_slot" name="time_slot" required>
+            <option value="Mañana" {% if registrant and registrant['time_slot'] == 'Mañana' %}selected{% endif %}>Mañana</option>
+            <option value="Tarde" {% if registrant and registrant['time_slot'] == 'Tarde' %}selected{% endif %}>Tarde</option>
+            <option value="Noche" {% if registrant and registrant['time_slot'] == 'Noche' %}selected{% endif %}>Noche</option>
+        </select><br>
+
+        <p>Seminarios:</p>
+        <input type="checkbox" id="ai" name="seminars" value="Inteligencia Artificial" {% if registrant and 'Inteligencia Artificial' in registrant['seminars'] %}checked{% endif %}>
+        <label for="ai">Inteligencia Artificial</label><br>
+
+        <input type="checkbox" id="ml" name="seminars" value="Aprendizaje Automático" {% if registrant and 'Aprendizaje Automático' in registrant['seminars'] %}checked{% endif %}>
+        <label for="ml">Aprendizaje Automático</label><br>
+
+        <input type="checkbox" id="arena" name="seminars" value="Simulación con Arena" {% if registrant and 'Simulación con Arena' in registrant['seminars'] %}checked{% endif %}>
+        <label for="arena">Simulación con Arena</label><br>
+
+        <input type="checkbox" id="robotics" name="seminars" value="Robótica Educativa" {% if registrant and 'Robótica Educativa' in registrant['seminars'] %}checked{% endif %}>
+        <label for="robotics">Robótica Educativa</label><br>
+
+        <button type="submit">{{ 'Actualizar' if registrant else 'Enviar' }} registro</button>
+    </form>
+</body>
+</html>
